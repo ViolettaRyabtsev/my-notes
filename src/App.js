@@ -17,11 +17,7 @@ class App extends React.Component {
       body: "",
     };
   }
-
   addNote = () => {
-    const newArr = [];
-    newArr.slice(this.state.notes);
-
     const newNote = {
       title: this.state.title,
       body: this.state.body,
@@ -31,32 +27,23 @@ class App extends React.Component {
       }),
     };
 
-    newArr.push(newNote);
-    this.setState({
-      notes: newArr,
-    });
-
     axios.post(`http://localhost:5000/`, newNote).then((res) => {
-      console.log(res);
       console.log(res.data, "after post to server");
     });
-    console.log(newNote);
+  };
+  componentDidMount = () => {
+    axios.get(`http://localhost:5000/`).then((res) => {
+      console.log(res, "result");
+
+      this.setState({
+        notes: res.data,
+      });
+    });
+    console.log(this.state.notes, "state notes");
   };
 
-  // componentDidMount=()=>{
-  //   axios.post(`http://localhost:5000/`,  ).then((res) => {
-  //     console.log(res);
-  //     console.log(res.data, "after post to server");
-  //   });
-
-  //   axios.get(`http://localhost:5000/`).then((res) => {
-  //     const persons = res.data;
-  //     console.log(persons, "did i get ?");
-  //   });
-
-  // }
   render() {
-    console.log(this.state.notes);
+    console.log(this.state.notes, "state notes");
     return (
       <div className="main-page">
         <TopBar />
